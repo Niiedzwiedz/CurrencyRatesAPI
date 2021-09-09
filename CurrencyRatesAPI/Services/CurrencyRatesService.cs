@@ -45,6 +45,13 @@ namespace CurrencyRatesAPI.Services
 
             foreach (KeyValuePair<string, string> v in parameters.CurrencyCodes)
             {
+                CurrencyRate temp = new CurrencyRate()
+                {
+                    From = v.Key,
+                    To = v.Value,
+                    Rates = new Dictionary<string, double>()
+                };
+
                 for (var currentDate = parameters.StartDate; currentDate <= parameters.EndDate; currentDate = currentDate.AddDays(1))
                 {
                     //Console.WriteLine(currentDate);
@@ -107,18 +114,15 @@ namespace CurrencyRatesAPI.Services
 
                     _dbContext.SaveChanges();
 
-                    results.Add(
-                        new CurrencyRate()
-                        {
-                            From = key.CuerrencyCode,
-                            To = val.CuerrencyCode,
-                            Date = currentDate,
-                            Value = (
-                                ((val.CuerrencyCode == "EUR") ? 1.0 : val.Rate) / ((key.CuerrencyCode == "EUR") ? 1.0 : key.Rate)
-                            )
-                        }
-                    );
+                    temp.Rates.Add(
+                        currentDate.ToString("yyyy-MM-dd"),
+                        ((val.CuerrencyCode == "EUR") ? 1.0 : val.Rate) / ((key.CuerrencyCode == "EUR") ? 1.0 : key.Rate)
+                        );
+                }
 
+                if (temp.Rates.Count > 0)
+                {
+                    results.Add(temp);
                 }
             }
 
