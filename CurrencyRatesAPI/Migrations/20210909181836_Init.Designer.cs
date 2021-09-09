@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CurrencyRatesAPI.Migrations
 {
     [DbContext(typeof(RatesDbContext))]
-    [Migration("20210909135702_Init")]
+    [Migration("20210909181836_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,14 +36,6 @@ namespace CurrencyRatesAPI.Migrations
                     b.HasKey("CuerrencyCode", "Date");
 
                     b.ToTable("DailyRates");
-
-                    b.HasData(
-                        new
-                        {
-                            CuerrencyCode = "PLN",
-                            Date = new DateTime(2021, 5, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Rate = 0.111
-                        });
                 });
 #pragma warning restore 612, 618
         }

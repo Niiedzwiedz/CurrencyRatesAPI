@@ -32,16 +32,6 @@ namespace CurrencyRatesAPI.Entities
             modelBuilder.Entity<DailyRate>()
                 .Property(v => v.Rate)
                 .IsRequired();
-
-            modelBuilder.Entity<DailyRate>()
-                .HasData(
-                    new DailyRate()
-                    {
-                        CuerrencyCode = "PLN",
-                        Date = new DateTime(2021, 05, 03),
-                        Rate = 0.111
-                    }
-                );
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

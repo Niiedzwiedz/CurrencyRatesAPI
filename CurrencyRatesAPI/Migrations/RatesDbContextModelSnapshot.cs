@@ -34,14 +34,6 @@ namespace CurrencyRatesAPI.Migrations
                     b.HasKey("CuerrencyCode", "Date");
 
                     b.ToTable("DailyRates");
-
-                    b.HasData(
-                        new
-                        {
-                            CuerrencyCode = "PLN",
-                            Date = new DateTime(2021, 5, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Rate = 0.111
-                        });
                 });
 #pragma warning restore 612, 618
         }

@@ -19,11 +19,6 @@ namespace CurrencyRatesAPI.Migrations
                 {
                     table.PrimaryKey("PK_DailyRates", x => new { x.CuerrencyCode, x.Date });
                 });
-
-            migrationBuilder.InsertData(
-                table: "DailyRates",
-                columns: new[] { "CuerrencyCode", "Date", "Rate" },
-                values: new object[] { "PLN", new DateTime(2021, 5, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), 0.111 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
