@@ -8,7 +8,7 @@ namespace CurrencyRatesAPI.Services
 {
     public interface ICurrencyRatesService
     {
-        ActionResult<string> GetApiKey();
+        ActionResult<string> GetApiKey(LoginData data);
         ActionResult<List<CurrencyRate>> GetRates(SearchParameters parameters);
     }
 }

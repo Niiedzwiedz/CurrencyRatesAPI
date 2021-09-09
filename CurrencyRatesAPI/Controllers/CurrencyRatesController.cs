@@ -28,10 +28,10 @@ namespace CurrencyRatesAPI.Controllers
 
         #region Generate_API_Key
         [HttpGet("apiKey")]
-        public ActionResult<string> GetApiKey()
+        public ActionResult<string> GetApiKey([FromBody] LoginData data)
         {
-            var result = _service.GetApiKey();
-            if (result is null) return NotFound();
+            var result = _service.GetApiKey(data);
+            if (result is null) return Unauthorized();
             else
             {
                 _apiKey = result.Value;
@@ -44,7 +44,6 @@ namespace CurrencyRatesAPI.Controllers
         [HttpGet("parameters")]
         public ActionResult<List<CurrencyRate>> GetRates([FromBody] SearchParameters parameters)
         {
-            if (_apiKey != parameters.ApiKey) return Unauthorized();
             if (parameters.EndDate > DateTime.Today) return NotFound();
             if (parameters.EndDate < parameters.StartDate) return NotFound();
 

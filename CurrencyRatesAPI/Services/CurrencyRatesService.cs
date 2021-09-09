@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Xml;
 
 namespace CurrencyRatesAPI.Services
@@ -21,8 +22,23 @@ namespace CurrencyRatesAPI.Services
         }
 
         #region Generate_API_Key
-        public ActionResult<string> GetApiKey()
+        public ActionResult<string> GetApiKey(LoginData data)
         {
+            //Find username
+            var user = _dbContext.AuthorizationTable.Find(data.Username);
+            if (user is null) return null;
+
+            //Encode
+            byte[] encodedPassword = new UTF8Encoding().GetBytes(data.Password);
+            byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(encodedPassword);
+            string encoded = BitConverter.ToString(hash)
+               .Replace("-", string.Empty)
+               .ToLower();
+
+            //Authorization
+            if (user.Password != encoded) return null;
+
+            //Generate Key
             var key = new byte[128];
             using (var generator = RandomNumberGenerator.Create())
             {
@@ -31,6 +47,12 @@ namespace CurrencyRatesAPI.Services
             string apiKey = Convert.ToBase64String(key);
 
             _apiKey = apiKey;
+
+            //set new Api Key
+            user.APIKey = apiKey;
+            _dbContext.AuthorizationTable.Update(user);
+            _dbContext.SaveChanges();
+
             return _apiKey;
         }
         #endregion
@@ -38,6 +60,9 @@ namespace CurrencyRatesAPI.Services
         #region Get_by_Parameters
         public ActionResult<List<CurrencyRate>> GetRates(SearchParameters parameters)
         {
+            var user =_dbContext.AuthorizationTable.FirstOrDefault<User>(v => v.APIKey == parameters.ApiKey);
+            if (user is null) return null;
+
             if (_apiKey != parameters.ApiKey) return null;
             if (parameters.EndDate > DateTime.Today) return null;
 

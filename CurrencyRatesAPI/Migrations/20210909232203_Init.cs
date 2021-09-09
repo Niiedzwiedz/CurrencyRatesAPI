@@ -8,6 +8,19 @@ namespace CurrencyRatesAPI.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AuthorizationTable",
+                columns: table => new
+                {
+                    UserName = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    APIKey = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AuthorizationTable", x => x.UserName);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DailyRates",
                 columns: table => new
                 {
@@ -23,6 +36,9 @@ namespace CurrencyRatesAPI.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AuthorizationTable");
+
             migrationBuilder.DropTable(
                 name: "DailyRates");
         }

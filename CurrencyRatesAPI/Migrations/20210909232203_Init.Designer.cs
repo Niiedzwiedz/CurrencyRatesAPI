@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CurrencyRatesAPI.Migrations
 {
     [DbContext(typeof(RatesDbContext))]
-    [Migration("20210909181836_Init")]
+    [Migration("20210909232203_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,24 @@ namespace CurrencyRatesAPI.Migrations
                     b.HasKey("CuerrencyCode", "Date");
 
                     b.ToTable("DailyRates");
+                });
+
+            modelBuilder.Entity("CurrencyRatesAPI.Entities.User", b =>
+                {
+                    b.Property<string>("UserName")
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<string>("APIKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserName");
+
+                    b.ToTable("AuthorizationTable");
                 });
 #pragma warning restore 612, 618
         }

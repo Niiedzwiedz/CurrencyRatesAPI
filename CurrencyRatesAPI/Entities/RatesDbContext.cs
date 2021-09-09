@@ -9,9 +9,10 @@ namespace CurrencyRatesAPI.Entities
     public class RatesDbContext : DbContext
     {
         private string _connectionString =
-            $"Data Source=(localdb)\\mssqllocaldb;Initial Catalog=CurrencyRatesDb;Integrated Security=True;MultipleActiveResultSets=True";
+            $"Server=DESKTOP-1J71C2D\\SQLEXPRESS;Database=CurrencyRatesDb;Trusted_Connection=True;MultipleActiveResultSets=true";
 
         public DbSet<DailyRate> DailyRates { get; set; }
+        public DbSet<User> AuthorizationTable { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,6 +32,18 @@ namespace CurrencyRatesAPI.Entities
 
             modelBuilder.Entity<DailyRate>()
                 .Property(v => v.Rate)
+                .IsRequired();
+
+            modelBuilder.Entity<User>()
+                .HasKey(v => v.UserName);
+
+            modelBuilder.Entity<User>()
+                .Property(v => v.UserName)
+                .IsRequired()
+                .HasMaxLength(25);
+
+            modelBuilder.Entity<User>()
+                .Property(v => v.Password)
                 .IsRequired();
         }
 
