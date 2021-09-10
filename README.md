@@ -1,6 +1,6 @@
 # CurrencyRatesAPI
 
-#### It is RESTfull Web API providing currencies rates in the context of a date.
+#### It is Web API providing currencies rates in the context of a date.
 
 ###### The API recives in Body GET parameters that uses to search data from European Central Bank's (ECP) API called "ECB SDMX 2.1 RESTful web service" documented on https://sdw-wsrest.ecb.europa.eu/help/. Before user will use it, he needs to provide API key, that must by generated and returned by this API during the log in process. API needs default configured SQL Express. To minimalize waiting time all recived data are stored in SQL Express Database. 
 ###### Example of provided parameters:
